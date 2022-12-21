@@ -1,2 +1,2 @@
-# ptt-api-sdk-python
-PTT api SDK for Python
+# PTT api SDK for Python
+
