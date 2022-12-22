@@ -1,5 +1,4 @@
-import requests
-from SingleLog import DefaultLogger as Logger, LogLevel
+from SingleLog import DefaultLogger as Logger
 
 from ptt_api_sdk import utils
 
@@ -31,7 +30,7 @@ class PttAPI(object):
     def version(self):
         """Get PTT API version from the endpoint."""
 
-        self.logger.info('Get PTT API version from the endpoint.')
+        self.logger.info('Get PTT api version from the endpoint.')
         self.logger.debug('Endpoint:', f'{self.endpoint}/version')
 
         response = utils.req('GET', f'{self.endpoint}/version', timeout=self.timeout)
@@ -45,3 +44,19 @@ class PttAPI(object):
         self.logger.info('Get PTT API version from the endpoint successfully.')
         return response
 
+    def uservisitcount(self):
+        """Get PTT API version from the endpoint."""
+
+        self.logger.info('Get PTT api uservisitcount from the endpoint.')
+        self.logger.debug('Endpoint:', f'{self.endpoint}/uservisitcount')
+
+        response = utils.req('GET', f'{self.endpoint}/uservisitcount', timeout=self.timeout)
+
+        self.logger.debug('Response:', response)
+
+        if response is None:
+            self.logger.error('Endpoint:', f'{self.endpoint}/uservisitcount', 'Response is None.')
+            return None
+
+        self.logger.info('Get PTT API uservisitcount from the endpoint successfully.')
+        return response

@@ -9,6 +9,7 @@ def test():
     api = PttAPI('token')
 
     logger.info('version api', api.version())
+    logger.info('uservisitcount api', api.uservisitcount())
 
 
 if __name__ == '__main__':
