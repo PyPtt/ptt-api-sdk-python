@@ -1,17 +1,19 @@
 import requests
 from SingleLog import DefaultLogger as Logger, LogLevel
 
+from ptt_api_sdk import utils
+
 
 class PttAPI(object):
     """PttAPI is a class to access PTT API."""
 
-    def __init__(self, access_token: str, endpoint: str = 'https://api.devptt.dev', timeout: int = 5):
+    def __init__(self, access_token: str, endpoint: str = 'https://api.devptt.dev/api', timeout: int = 5):
 
         # api doc: https://doc.devptt.dev/
 
         self.logger = Logger(
             'Ptt API',
-            LogLevel.DEBUG
+            # LogLevel.DEBUG
         )
 
         if not isinstance(access_token, str):
@@ -30,22 +32,16 @@ class PttAPI(object):
         """Get PTT API version from the endpoint."""
 
         self.logger.info('Get PTT API version from the endpoint.')
-        self.logger.info('Endpoint:', f'{self.endpoint}/version')
-        try:
-            response = requests.get(f'{self.endpoint}/version', timeout=self.timeout)
-            response.encoding = 'utf-8'
-        except requests.exceptions.HTTPError as err:
-            self.logger.error(err)
+        self.logger.debug('Endpoint:', f'{self.endpoint}/version')
+
+        response = utils.req('GET', f'{self.endpoint}/version', timeout=self.timeout)
+
+        self.logger.debug('Response:', response)
+
+        if response is None:
+            self.logger.error('Endpoint:', f'{self.endpoint}/version', 'Response is None.')
             return None
 
-        if response.status_code != 200:
-            self.logger.error(f'Get PTT API version failed. Status code: {response.status_code}')
-            return None
+        self.logger.info('Get PTT API version from the endpoint successfully.')
+        return response
 
-        self.logger.info('Get PTT API version success.')
-        self.logger.debug(f'PTT API version: {response.text}')
-
-        with open('version.html', 'w') as f:
-            f.write(response.text)
-
-        return response.json()
